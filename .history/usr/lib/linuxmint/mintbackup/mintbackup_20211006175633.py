@@ -267,19 +267,17 @@ class MintBackup:
         self.builder.get_object("button_back").show()
         self.builder.get_object("button_back").set_sensitive(True)
         self.builder.get_object("button_forward").show()
-        self.builder.get_object("grid1").hide()
         if tab == TAB_PKG_RESTORE_1:
             self.builder.get_object("button_forward").set_sensitive(False)
         else:
             self.builder.get_object("button_forward").set_sensitive(True)
 
-    def on_checkb1_toggled(self, button):
+    def on_checkb1_toggled(button):
         if button.get_active():
-            #state = "Active"
-            self.builder.get_object("grid1").show()
+            state = "Active"
         else:
             state = "Inactive"
-            self.builder.get_object("grid1").hide()
+        #print "Checkbutton 1 toggled, state is " + state
 
     def forward_callback(self, widget):
         # Go forward

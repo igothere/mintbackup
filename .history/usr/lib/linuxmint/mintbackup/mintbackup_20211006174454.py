@@ -162,7 +162,7 @@ class MintBackup:
         self.errors = Gtk.ListStore(str, str)
 
         #checkbox
-        self.builder.get_object("filechooserbutton_backup_dest_cloud").connect("clicked", self.on_checkb1_toggled)
+        self.builder.get_object("filechooserbutton_backup_dest_cloud").connect("clicked", self.forward_callback)
         # nav buttons
         self.builder.get_object("button_back").connect("clicked", self.back_callback)
         self.builder.get_object("button_forward").connect("clicked", self.forward_callback)
@@ -267,19 +267,10 @@ class MintBackup:
         self.builder.get_object("button_back").show()
         self.builder.get_object("button_back").set_sensitive(True)
         self.builder.get_object("button_forward").show()
-        self.builder.get_object("grid1").hide()
         if tab == TAB_PKG_RESTORE_1:
             self.builder.get_object("button_forward").set_sensitive(False)
         else:
             self.builder.get_object("button_forward").set_sensitive(True)
-
-    def on_checkb1_toggled(self, button):
-        if button.get_active():
-            #state = "Active"
-            self.builder.get_object("grid1").show()
-        else:
-            state = "Inactive"
-            self.builder.get_object("grid1").hide()
 
     def forward_callback(self, widget):
         # Go forward
