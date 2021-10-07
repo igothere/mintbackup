@@ -35,7 +35,7 @@ gettext.textdomain(APP)
 _ = gettext.gettext
 
 HOME = os.path.expanduser("~")
-UI_FILE = '/home/eden/works/git-eden/mintbackup/usr/share/linuxmint/mintbackup/mintbackup2.ui'
+UI_FILE = '/home/eden/works/git/mintbackup/usr/share/linuxmint/mintbackup/mintbackup2.ui'
 META_FILE = ".meta.mint"
 
 BACKUP_DIR = os.path.join(GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DOCUMENTS), _("Backups"))
@@ -283,11 +283,12 @@ class MintBackup:
             self.builder.get_object("grid1").hide()
 
     def conneect_callback(self, widget):
+        os.system("gio mount -u davs://drive.hamonikr.org/remote.php/webdav")
         id = self.builder.get_object("id1").get_text()
         password = self.builder.get_object("password1").get_text()
-        exec1 = "echo \"{} \nWORKGROUP \n{} \n\" | gio mount davs://drive.hamonikr.org/remote.php/webdav".format(id,password)
-        print(exec1)
-        os.system(exec1)
+        os.system("echo \"{}\n \n{}\" > {}/.cred |gio mount davs://drive.hamonikr.org/remote.php/webdav < {}/.cred".format(id,password,self.home_directory,self.home_directory))
+        BACKUP_DIR = "/run/user/1000/gvfs/dav:host=drive.hamonikr.org,ssl=true,prefix=%2Fremote.php%2Fwebdav"
+        self.builder.get_object("filechooserbutton_backup_dest").set_current_folder(BACKUP_DIR)
 
     def forward_callback(self, widget):
         # Go forward
@@ -349,7 +350,7 @@ class MintBackup:
             self.settings.set_strv("included-hidden-paths", includes)
             thread = threading.Thread(target=self.backup)
             thread.daemon = True
-            thread.start()
+            thread.start()            
         elif sel == TAB_FILE_BACKUP_4:
             # show info page.
             self.builder.get_object("button_forward").hide()
