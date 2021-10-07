@@ -270,7 +270,6 @@
                 <property name="can_focus">False</property>
                 <property name="border_width">12</property>
                 <property name="orientation">vertical</property>
-                <property name="spacing">12</property>
                 <property name="baseline_position">bottom</property>
                 <child>
                   <object class="GtkBox" id="box3">
@@ -426,6 +425,19 @@
                       <packing>
                         <property name="left_attach">0</property>
                         <property name="top_attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="button_connect">
+                        <property name="label">gtk-connect</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="use_stock">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">2</property>
                       </packing>
                     </child>
                   </object>

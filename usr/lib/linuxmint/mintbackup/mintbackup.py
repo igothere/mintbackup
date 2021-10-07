@@ -161,8 +161,9 @@ class MintBackup:
         # model.
         self.errors = Gtk.ListStore(str, str)
 
-        #checkbox
+        #use cloud
         self.builder.get_object("filechooserbutton_backup_dest_cloud").connect("clicked", self.on_checkb1_toggled)
+        self.builder.get_object("button_connect").connect("clicked", self.conneect_callback)
         # nav buttons
         self.builder.get_object("button_back").connect("clicked", self.back_callback)
         self.builder.get_object("button_forward").connect("clicked", self.forward_callback)
@@ -278,8 +279,15 @@ class MintBackup:
             #state = "Active"
             self.builder.get_object("grid1").show()
         else:
-            state = "Inactive"
+            #state = "Inactive"
             self.builder.get_object("grid1").hide()
+
+    def conneect_callback(self, widget):
+        id = self.builder.get_object("id1").get_text()
+        password = self.builder.get_object("password1").get_text()
+        exec1 = "echo \"{} \nWORKGROUP \n{} \n\" | gio mount davs://drive.hamonikr.org/remote.php/webdav".format(id,password)
+        print(exec1)
+        os.system(exec1)
 
     def forward_callback(self, widget):
         # Go forward
