@@ -1,3 +1,10 @@
+mintbackup (2.4.3) uma; urgency=medium
+
+  [ Eden ]
+  * add cloud
+
+ -- Eden kim <swkim@invesume.com>  Fri, 08 Oct 2021 14:34:08 +0900
+
 mintbackup (2.4.2) uma; urgency=medium
 
   [ Eric ]

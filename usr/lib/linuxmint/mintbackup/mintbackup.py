@@ -8,6 +8,7 @@ import sys
 import tarfile
 import threading
 import time
+import atexit
 
 import gi
 gi.require_version("Gtk", "3.0")
@@ -35,7 +36,7 @@ gettext.textdomain(APP)
 _ = gettext.gettext
 
 HOME = os.path.expanduser("~")
-UI_FILE = '/home/eden/works/git/mintbackup/usr/share/linuxmint/mintbackup/mintbackup2.ui'
+UI_FILE = '/usr/share/linuxmint/mintbackup/mintbackup.ui'
 META_FILE = ".meta.mint"
 
 BACKUP_DIR = os.path.join(GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DOCUMENTS), _("Backups"))
@@ -70,7 +71,6 @@ class MintBackup:
         self.restore_progressbar = self.builder.get_object("progressbar2")
 
         self.notebook.set_current_page(TAB_START)
-
         # inidicates whether an operation is taking place.
         self.operating = False
 
@@ -163,7 +163,9 @@ class MintBackup:
 
         #use cloud
         self.builder.get_object("filechooserbutton_backup_dest_cloud").connect("clicked", self.on_checkb1_toggled)
+        self.builder.get_object("filechooserbutton_restore_dest_cloud").connect("clicked", self.on_checkb2_toggled)
         self.builder.get_object("button_connect").connect("clicked", self.conneect_callback)
+        self.builder.get_object("button_connect1").connect("clicked", self.conneect_callback1)
         # nav buttons
         self.builder.get_object("button_back").connect("clicked", self.back_callback)
         self.builder.get_object("button_forward").connect("clicked", self.forward_callback)
@@ -269,6 +271,7 @@ class MintBackup:
         self.builder.get_object("button_back").set_sensitive(True)
         self.builder.get_object("button_forward").show()
         self.builder.get_object("grid1").hide()
+        self.builder.get_object("grid2").hide()
         if tab == TAB_PKG_RESTORE_1:
             self.builder.get_object("button_forward").set_sensitive(False)
         else:
@@ -276,19 +279,29 @@ class MintBackup:
 
     def on_checkb1_toggled(self, button):
         if button.get_active():
-            #state = "Active"
             self.builder.get_object("grid1").show()
         else:
-            #state = "Inactive"
             self.builder.get_object("grid1").hide()
 
+    def on_checkb2_toggled(self, button):
+        if button.get_active():
+            self.builder.get_object("grid2").show()
+        else:
+            self.builder.get_object("grid2").hide()
+
     def conneect_callback(self, widget):
-        os.system("gio mount -u davs://drive.hamonikr.org/remote.php/webdav")
         id = self.builder.get_object("id1").get_text()
         password = self.builder.get_object("password1").get_text()
-        os.system("echo \"{}\n \n{}\" > {}/.cred |gio mount davs://drive.hamonikr.org/remote.php/webdav < {}/.cred".format(id,password,self.home_directory,self.home_directory))
+        os.system("echo \"{}\n \n{}\" > {}/.cred | gio mount davs://drive.hamonikr.org/remote.php/webdav < {}/.cred".format(id,password,self.home_directory,self.home_directory))
         BACKUP_DIR = "/run/user/1000/gvfs/dav:host=drive.hamonikr.org,ssl=true,prefix=%2Fremote.php%2Fwebdav"
         self.builder.get_object("filechooserbutton_backup_dest").set_current_folder(BACKUP_DIR)
+    
+    def conneect_callback1(self, widget):
+        id = self.builder.get_object("id2").get_text()
+        password = self.builder.get_object("password2").get_text()
+        os.system("echo \"{}\n \n{}\" > {}/.cred | gio mount davs://drive.hamonikr.org/remote.php/webdav < {}/.cred".format(id,password,self.home_directory,self.home_directory))
+        BACKUP_DIR = "/run/user/1000/gvfs/dav:host=drive.hamonikr.org,ssl=true,prefix=%2Fremote.php%2Fwebdav"
+        self.builder.get_object("filechooserbutton_restore_source").set_current_folder(BACKUP_DIR)
 
     def forward_callback(self, widget):
         # Go forward
@@ -350,7 +363,7 @@ class MintBackup:
             self.settings.set_strv("included-hidden-paths", includes)
             thread = threading.Thread(target=self.backup)
             thread.daemon = True
-            thread.start()            
+            thread.start()     
         elif sel == TAB_FILE_BACKUP_4:
             # show info page.
             self.builder.get_object("button_forward").hide()
@@ -889,7 +902,11 @@ class MintBackup:
                     row[0] = selection
             else:
                 row[0] = selection
+    # end finally
+    def handle_exit():
+        os.system("gio mount -u davs://drive.hamonikr.org/remote.php/webdav")
 
+    atexit.register(handle_exit)
 if __name__ == "__main__":
     MintBackup()
     Gtk.main()
