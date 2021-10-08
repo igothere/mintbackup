@@ -1,0 +1,13 @@
+Package: hamonikrbackup
+Version: 1.0.0
+Architecture: all
+Maintainer: Eden Kim <swkim@invesume.com>
+Installed-Size: 446
+Depends: python3 (>= 3), python3-gi, python3-apt, python3-setproctitle, aptitude, gir1.2-xapp-1.0, mint-common (>= 2), ca-certificates (>= 20210119~20.04.2), dconf-gsettings-backend | gsettings-backend
+Conflicts: mintbackup
+Replaces: mintbackup
+Section: admin
+Priority: optional
+Description: Home 디렉토디 백업 툴
+ 간편하게 Home 디렉토리 데이터 및 소프트웨어를 백업 및 복구 할 수 있으며
+ 하모니카 드라이브 저장소에 백업 데이터를 저장하고 복구 할 수 있습니다.
