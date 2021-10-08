@@ -1,11 +1,11 @@
-Source: mintbackup
+Source: hamonikrbackup
 Section: admin
 Priority: optional
-Maintainer: Clement Lefebvre <root@linuxmint.com>
+Maintainer: Eden Kim <swkim@invesume.com>
 Build-Depends: debhelper (>= 9)
 Standards-Version: 3.9.5
 
-Package: mintbackup
+Package: hamonikrbackup
 Architecture: all
 Depends: python3 (>= 3),
          python3-gi,
@@ -16,5 +16,9 @@ Depends: python3 (>= 3),
          mint-common (>= 2),
          ca-certificates (>= 20210119~20.04.2),
          ${misc:Depends}
-Description: Home Directory Backup Tool
- Easily backup and restore your personal data and your software selection.
+Conflicts: mintbackup
+Replaces: mintbackup
+Description: Home 디렉토디 백업 툴
+ 간편하게 Home 디렉토리 데이터 및 소프트웨어를 백업 및 복구 할 수 있으며
+ 하모니카 드라이브 저장소에 백업 데이터를 저장하고 복구 할 수 있습니다.
+ 
