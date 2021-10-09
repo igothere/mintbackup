@@ -16,7 +16,7 @@ Depends: python3 (>= 3),
          mint-common (>= 2),
          ca-certificates (>= 20210119~20.04.2),
          ${misc:Depends}
-Conflicts: mintbackup
+Conflicts:
 Replaces: mintbackup
 Description: Home 디렉토리 백업 툴
  간편하게 Home 디렉토리 및 소프트웨어를 백업 및 복구 할 수 있으며

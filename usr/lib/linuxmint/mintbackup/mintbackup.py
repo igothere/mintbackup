@@ -62,14 +62,15 @@ class MintBackup:
         self.builder = Gtk.Builder()
         self.builder.set_translation_domain(APP)
         self.builder.add_from_file(UI_FILE)
-
+        
         self.settings = Gio.Settings(schema="com.linuxmint.backup")
         self.follow_links = self.settings.get_boolean("backup-follow-symlink")
 
         self.notebook = self.builder.get_object("notebook1")
         self.progressbar = self.builder.get_object("progressbar1")
         self.restore_progressbar = self.builder.get_object("progressbar2")
-
+        self.alert = self.builder.get_object('dialog1')
+        
         self.notebook.set_current_page(TAB_START)
         # inidicates whether an operation is taking place.
         self.operating = False
@@ -276,6 +277,15 @@ class MintBackup:
             self.builder.get_object("button_forward").set_sensitive(False)
         else:
             self.builder.get_object("button_forward").set_sensitive(True)
+    
+    def on_info_clicked(self):
+        self.dialog.format_secondary_text(
+            "And this is the secondary text that explains things."
+        )
+        self.dialog.run()
+        print("INFO dialog closed")
+
+        self.dialog.destroy()
 
     def on_checkb1_toggled(self, button):
         if button.get_active():
@@ -292,16 +302,26 @@ class MintBackup:
     def conneect_callback(self, widget):
         id = self.builder.get_object("id1").get_text()
         password = self.builder.get_object("password1").get_text()
-        os.system("echo \"{}\n \n{}\" > {}/.cred | gio mount davs://drive.hamonikr.org/remote.php/webdav < {}/.cred".format(id,password,self.home_directory,self.home_directory))
-        BACKUP_DIR = "/run/user/1000/gvfs/dav:host=drive.hamonikr.org,ssl=true,prefix=%2Fremote.php%2Fwebdav"
-        self.builder.get_object("filechooserbutton_backup_dest").set_current_folder(BACKUP_DIR)
+        check = os.system("echo \"{}\n \n{}\" > {}/.cred | gio mount davs://drive.hamonikr.org/remote.php/webdav < {}/.cred".format(id,password,self.home_directory,self.home_directory))
+        if check == 0:
+            BEFORE_DIR = os.popen("echo /run/user/*").read().strip()
+            BACKUP_DIR = BEFORE_DIR + "/gvfs/dav:host=drive.hamonikr.org,ssl=true,prefix=%2Fremote.php%2Fwebdav"
+            self.builder.get_object("filechooserbutton_backup_dest").set_current_folder(BACKUP_DIR)
+        else:
+            self.show_message(_("Check your Id and Password"))
+            return
     
     def conneect_callback1(self, widget):
         id = self.builder.get_object("id2").get_text()
         password = self.builder.get_object("password2").get_text()
-        os.system("echo \"{}\n \n{}\" > {}/.cred | gio mount davs://drive.hamonikr.org/remote.php/webdav < {}/.cred".format(id,password,self.home_directory,self.home_directory))
-        BACKUP_DIR = "/run/user/1000/gvfs/dav:host=drive.hamonikr.org,ssl=true,prefix=%2Fremote.php%2Fwebdav"
-        self.builder.get_object("filechooserbutton_restore_source").set_current_folder(BACKUP_DIR)
+        check = os.system("echo \"{}\n \n{}\" > {}/.cred | gio mount davs://drive.hamonikr.org/remote.php/webdav < {}/.cred".format(id,password,self.home_directory,self.home_directory))
+        if check == 0:
+            BEFORE_DIR = os.popen("echo /run/user/*").read().strip()
+            BACKUP_DIR = BEFORE_DIR + "/gvfs/dav:host=drive.hamonikr.org,ssl=true,prefix=%2Fremote.php%2Fwebdav"
+            self.builder.get_object("filechooserbutton_restore_source").set_current_folder(BACKUP_DIR)
+        else:
+            self.show_message(_("Check your Id and Password"))
+            return
 
     def forward_callback(self, widget):
         # Go forward

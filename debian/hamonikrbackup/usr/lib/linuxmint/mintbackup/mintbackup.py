@@ -293,14 +293,16 @@ class MintBackup:
         id = self.builder.get_object("id1").get_text()
         password = self.builder.get_object("password1").get_text()
         os.system("echo \"{}\n \n{}\" > {}/.cred | gio mount davs://drive.hamonikr.org/remote.php/webdav < {}/.cred".format(id,password,self.home_directory,self.home_directory))
-        BACKUP_DIR = "/run/user/1000/gvfs/dav:host=drive.hamonikr.org,ssl=true,prefix=%2Fremote.php%2Fwebdav"
+        BEFORE_DIR = os.popen("echo /run/user/*").read().strip()
+        BACKUP_DIR = BEFORE_DIR + "/gvfs/dav:host=drive.hamonikr.org,ssl=true,prefix=%2Fremote.php%2Fwebdav"
         self.builder.get_object("filechooserbutton_backup_dest").set_current_folder(BACKUP_DIR)
     
     def conneect_callback1(self, widget):
         id = self.builder.get_object("id2").get_text()
         password = self.builder.get_object("password2").get_text()
         os.system("echo \"{}\n \n{}\" > {}/.cred | gio mount davs://drive.hamonikr.org/remote.php/webdav < {}/.cred".format(id,password,self.home_directory,self.home_directory))
-        BACKUP_DIR = "/run/user/1000/gvfs/dav:host=drive.hamonikr.org,ssl=true,prefix=%2Fremote.php%2Fwebdav"
+        BEFORE_DIR = os.popen("echo /run/user/*").read().strip()
+        BACKUP_DIR = BEFORE_DIR + "/gvfs/dav:host=drive.hamonikr.org,ssl=true,prefix=%2Fremote.php%2Fwebdav"
         self.builder.get_object("filechooserbutton_restore_source").set_current_folder(BACKUP_DIR)
 
     def forward_callback(self, widget):

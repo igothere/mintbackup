@@ -1,7 +1,7 @@
-mintbackup (2.4.2+hamonikr1.0.0) uma; urgency=medium
+hamonikrbackup (2.4.2+hamonikr1.0.0) uma; urgency=medium
 
-  [ Eric ]
-  * mintbackup (2.4.2+hamonikr1.0.0) release
+  * Changed pkg name as hamonikrbackup
+    - remove conflict pkg name with mintbackup
 
  -- HamoniKR <pkg@hamonikr.org>  Fri, 08 Oct 2021 18:25:57 +0900
 
