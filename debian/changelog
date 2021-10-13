@@ -1,4 +1,4 @@
-hamonikrbackup (2.4.2+hamonikr1.0.0) uma; urgency=medium
+mintbackup (2.4.3+hamonikr1.0.1) uma; urgency=medium
 
   * Changed pkg name as hamonikrbackup
     - remove conflict pkg name with mintbackup

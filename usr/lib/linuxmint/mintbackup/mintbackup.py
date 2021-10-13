@@ -924,7 +924,7 @@ class MintBackup:
                 row[0] = selection
     # end finally
     def handle_exit():
-        os.system("gio mount -u davs://drive.hamonikr.org/remote.php/webdav | rm {}/.cred".format(os.path.expanduser("~")))
+        os.system("gio mount -u davs://drive.hamonikr.org/remote.php/webdav | echo \"\" > {}/.cred".format(os.path.expanduser("~")))
 
     atexit.register(handle_exit)
 if __name__ == "__main__":
