@@ -1,3 +1,8 @@
 .history
 debian/mintbackup
 debian/.debhelper
+debian/hamonikrbackup
+debian/hamonikrbackup.substvars
+debian/hamonikrbackup.debhelper.log
+debian/hamonikrbackup.substvars
+debian/files
